@@ -20,7 +20,7 @@
     "integration": "karma start .karma.cjs",
     "unit": "mocha '**/spec.js'",
     "test": "npm run unit && npm run integration",
-    "lint": "eslint '**/*.js'"
+    "lint": "eslint '**/*.js' '.*.cjs'"
   },
   "author": "Fiverr SRE",
   "license": "MIT",
