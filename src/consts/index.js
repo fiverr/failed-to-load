@@ -3,6 +3,7 @@
  * @type {string}
  */
 export const code = 'ERROR_NECESSARY_SCRIPT_NOT_LOADED';
+
 /**
  * The error message thrown when a script tag wasn't loaded.
  * @type {string}

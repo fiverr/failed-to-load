@@ -1,5 +1,6 @@
 const { join } = require('path');
-const { output: { file } } = require('./.rollup.cjs');
+
+const file = 'integration/test.js';
 
 module.exports = (config) => {
     const { LOG_INFO: logLevel } = config;
@@ -12,6 +13,7 @@ module.exports = (config) => {
         singleRun: true,
         concurrency: 1,
         hooks : [
+            'karma-webpack',
             'karma-chrome-launcher',
             'karma-mocha',
             'karma-mocha-reporter'
@@ -19,6 +21,8 @@ module.exports = (config) => {
         reporters: [ 'mocha' ],
         basePath: __dirname,
         customContextFile: join(__dirname, 'integration/context.html'),
-        files: [ file ]
+        files: [ file ],
+        preprocessors: { [file]: [ 'webpack' ] },
+        webpack: {}
     });
 };

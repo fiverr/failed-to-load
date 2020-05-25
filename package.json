@@ -16,7 +16,6 @@
   "browser": "index.js",
   "module": "index.js",
   "scripts": {
-    "preintegration": "rollup --config .rollup.cjs",
     "integration": "karma start .karma.cjs",
     "unit": "mocha '**/spec.js'",
     "test": "npm run unit && npm run integration",
@@ -39,7 +38,8 @@
     "karma-firefox-launcher": "^1.3.0",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
+    "karma-webpack": "^4.0.2",
     "mocha": "^7.1.2",
-    "rollup": "^2.10.8"
+    "webpack": "^4.43.0"
   }
 }
