@@ -14,7 +14,7 @@
   ],
   "type": "module",
   "browser": "index.js",
-  "module": "index.js",
+  "main": "main.js",
   "scripts": {
     "integration": "karma start .karma.cjs",
     "unit": "mocha '**/spec.js'",
