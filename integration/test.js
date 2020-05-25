@@ -8,6 +8,7 @@ chai.use(chaiString);
 const { expect } = chai;
 const { onerror } = window;
 const errors = [];
+let readyState;
 
 describe('Throws errors when script tags are not loaded', () => {
     beforeEach(() => {
@@ -17,10 +18,12 @@ describe('Throws errors when script tags are not loaded', () => {
                 ? false
                 : onerror.call(window, message, file, line, column, error);
         };
+        ({ readyState } = document);
     });
     afterEach(() => {
         errors.length = 0;
         window.onerror = onerror;
+        Object.defineProperty(document, 'readyState', { value: readyState, writable: true })
     });
     it('should throw relevant error on the window context', async() => {
         register();
@@ -65,5 +68,21 @@ describe('Throws errors when script tags are not loaded', () => {
         const [ { message } ] = errors;
         expect(message).to.match(/http:\/\/localhost:\d{4}\/one\/missing\.js/m);
         expect(message).to.match(/http:\/\/localhost:\d{4}\/other\/missing\.js/m);
+    });
+    it('should register for window load when document is not ready', async() => {
+        Object.defineProperty(document, 'readyState', { value: 'loading', writable: true })
+        register();
+        await wait(100);
+        expect(errors).to.have.lengthOf(0);
+        window.dispatchEvent(new Event('load'));
+        await wait(100);
+        expect(errors).to.have.lengthOf(1);
+    });
+    it('should trigger on next tick when document is ready', async() => {
+        Object.defineProperty(document, 'readyState', { value: 'complete', writable: true })
+        register();
+        expect(errors).to.have.lengthOf(0);
+        await wait(0);
+        expect(errors).to.have.lengthOf(1);
     });
 });
