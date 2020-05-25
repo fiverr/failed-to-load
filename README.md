@@ -1,5 +1,5 @@
 # failed-to-load
-Find script tag that have failed to load before window.load
+Find script tags that have failed to load before `window.load`.
 
 Add this attribute "onload" with "this.loaded=1" in its value (`onload="this.loaded=1"`)
 ```html
