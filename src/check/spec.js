@@ -32,6 +32,9 @@ describe('check', () => {
         );
         expect(check()).to.have.lengthOf(3);
     });
+    it('should return an array', () => {
+        expect(check()).to.be.an('array');
+    });
     it('should skip deferred and async scripts', () => {
         nodes.push(
             new Node(),

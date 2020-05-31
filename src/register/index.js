@@ -1,5 +1,5 @@
-import check from '../check';
-import { code, message } from '../consts';
+import check from '../check/index.js';
+import { code, message } from '../consts/index.js';
 
 /**
  * Register "checkAndThrow" function to the `window.load` event.
@@ -21,7 +21,14 @@ function checkAndThrow() {
         const files = check();
 
         if (files.length) {
-            const error = new Error([ message, ...files.map(({ src }) => src) ].join('\n'));
+            const error = new Error(
+                [
+                    message,
+                    ...files.map(
+                        ({ src }) => src
+                    )
+                ].join('\n')
+            );
             error.code = code;
             error.files = files;
 

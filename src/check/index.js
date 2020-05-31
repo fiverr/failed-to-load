@@ -9,8 +9,7 @@ const QUERY = 'script[src][onload*="this.loaded"]';
  * Excludes tags that have either the `async` or `defer` attribute.
  * @returns {HTMLScriptElement[]}
  */
-export default () => Array.from(
-    document.querySelectorAll(QUERY)
-).filter(
+export default () => [].filter.call(
+    document.querySelectorAll(QUERY),
     (s) => !(s.loaded || s.async || s.defer)
 );
