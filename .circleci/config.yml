@@ -5,7 +5,7 @@ defaults: &defaults
 
 version: 2.1
 jobs:
-  test:
+  publish:
     <<: *defaults
     steps:
       - checkout
@@ -23,4 +23,5 @@ workflows:
   version: 2.1
   ci-cd:
     jobs:
-      - test
+      - publish:
+          context: org-global
