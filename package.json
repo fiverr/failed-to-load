@@ -1,7 +1,7 @@
 {
   "name": "failed-to-load",
   "version": "1.0.0",
-  "description": "Find script tag that have failed to load before window.load",
+  "description": "Find script tag that have failed to load when document's readyState is complete",
   "tags": [
     "script",
     "script tag",

@@ -2,19 +2,27 @@ import check from '../check/index.js';
 import { code, message } from '../consts/index.js';
 
 /**
- * Register "checkAndThrow" function to the `window.load` event.
+ * Call "checkAndThrow" only when document's readyState is complete.
+ * @param {function} callback
+ * @returns {undefined}
  */
-export default function register() {
+export default function register(callback) {
     document.readyState === 'complete'
-        ? checkAndThrow()
-        : window.addEventListener('load', checkAndThrow);
+        ? checkAndThrow(callback)
+        : document.addEventListener(
+            'readystatechange',
+            () => register(callback),
+            { once: true }
+        );
 }
 
 /**
  * Belated execution of the check and error throwing
  * Throws the error globally (potentially).
+ * @param {function} callback
+ * @returns {undefined}
  */
-function checkAndThrow() {
+function checkAndThrow(callback) {
 
     // Check and throw on next tick
     setTimeout(() => {
@@ -37,7 +45,11 @@ function checkAndThrow() {
                 code: error.code
             });
 
-            throw error;
+            if (typeof callback === 'function') {
+                callback(error);
+            } else {
+                throw error;
+            }
         }
     });
 }
