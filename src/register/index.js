@@ -2,13 +2,13 @@ import check from '../check/index.js';
 import { code, message } from '../consts/index.js';
 
 /**
- * Call "checkAndThrow" only when document's readyState is complete.
+ * Call "checkAndErr" only when document's readyState is complete.
  * @param {function} callback
  * @returns {undefined}
  */
 export default function register(callback) {
     document.readyState === 'complete'
-        ? checkAndThrow(callback)
+        ? checkAndErr(callback)
         : document.addEventListener(
             'readystatechange',
             () => register(callback),
@@ -22,34 +22,34 @@ export default function register(callback) {
  * @param {function} callback
  * @returns {undefined}
  */
-function checkAndThrow(callback) {
+function checkAndErr(callback) {
 
     // Check and throw on next tick
     setTimeout(() => {
         const files = check();
 
-        if (files.length) {
-            const error = new Error(
-                [
-                    message,
-                    ...files.map(
-                        ({ src }) => src
-                    )
-                ].join('\n')
-            );
-            error.code = code;
-            error.files = files;
+        if (!files.length) { return; }
 
-            error.toJSON = () => ({
-                message: error.message,
-                code: error.code
-            });
+        const error = new Error(
+            [
+                message,
+                ...files.map(
+                    ({ src }) => src
+                )
+            ].join('\n')
+        );
+        error.code = code;
+        error.files = files;
 
-            if (typeof callback === 'function') {
-                callback(error);
-            } else {
-                throw error;
-            }
+        error.toJSON = () => ({
+            message: error.message,
+            code: error.code
+        });
+
+        if (typeof callback === 'function') {
+            callback(error);
+        } else {
+            throw error;
         }
     });
 }
