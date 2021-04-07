@@ -32,18 +32,18 @@
     "@lets/wait": "^2.0.2",
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
-    "chai": "^4.2.0",
+    "chai": "^4.3.4",
     "chai-string": "^1.5.0",
-    "eslint": "^7.14.0",
-    "eslint-plugin-log": "^1.2.6",
-    "karma": "^5.2.3",
+    "eslint": "^7.23.0",
+    "eslint-plugin-log": "^1.2.7",
+    "karma": "^6.3.2",
     "karma-chrome-launcher": "^3.1.0",
     "karma-cli": "^2.0.0",
     "karma-firefox-launcher": "^2.1.0",
     "karma-mocha": "^2.0.1",
     "karma-mocha-reporter": "^2.2.5",
-    "karma-webpack": "^4.0.2",
-    "mocha": "^8.2.1",
-    "webpack": "^4.44.2"
+    "karma-webpack": "^5.0.0",
+    "mocha": "^8.3.2",
+    "webpack": "^5.30.0"
   }
 }

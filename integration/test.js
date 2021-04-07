@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiString from 'chai-string';
 import wait from '@lets/wait';
-import { register } from '..';
-import { code, message } from '../src/consts';
+import { register } from '../index.js';
+import { code, message } from '../src/consts/index.js';
 
 chai.use(chaiString);
 const { expect } = chai;
