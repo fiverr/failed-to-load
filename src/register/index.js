@@ -2,13 +2,13 @@ import check from '../check/index.js';
 import { code, message } from '../consts/index.js';
 
 /**
- * Call "checkAndErr" only when document's readyState is complete.
+ * Call "createError" only when document's readyState is complete.
  * @param {function} callback
  * @returns {undefined}
  */
 export default function register(callback) {
     document.readyState === 'complete'
-        ? checkAndErr(callback)
+        ? createError(callback)
         : document.addEventListener(
             'readystatechange',
             () => register(callback),
@@ -22,7 +22,7 @@ export default function register(callback) {
  * @param {function} callback
  * @returns {undefined}
  */
-function checkAndErr(callback) {
+function createError(callback) {
 
     // Check and throw on next tick
     setTimeout(() => {
