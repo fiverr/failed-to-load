@@ -1,5 +1,5 @@
 # failed-to-load
-Find script tags that have failed to load before `window.load`.
+Find script tags that have failed to load when document's readyState is complete.
 
 Add this attribute "onload" with "this.loaded=1" in its value (`onload="this.loaded=1"`)
 ```html
@@ -26,6 +26,13 @@ This will throw an ayncronous error to be caught by your global onerror callback
 >   ]
 > }
 > ```
+
+Alternatively, you can register a callback to catch the error (then it will not be thrown)
+```js
+register(
+  error => logger.warn(error)
+);
+```
 
 Check and report manually:
 ```js

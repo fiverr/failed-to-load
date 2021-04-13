@@ -1,4 +1,4 @@
-import check from './src/check';
-import register from './src/register';
+import check from './src/check/index.js';
+import register from './src/register/index.js';
 
 export { check, register };

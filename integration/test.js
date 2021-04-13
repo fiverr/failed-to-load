@@ -1,14 +1,26 @@
 import chai from 'chai';
 import chaiString from 'chai-string';
 import wait from '@lets/wait';
-import { register } from '..';
-import { code, message } from '../src/consts';
+import { register } from '../index.js';
+import { code, message } from '../src/consts/index.js';
 
 chai.use(chaiString);
 const { expect } = chai;
 const { onerror } = window;
 const errors = [];
 let readyState;
+
+function updateReadyState(readyState) {
+    Object.defineProperty(
+        document,
+        'readyState',
+        {
+            value: readyState,
+            writable: true
+        }
+    );
+    document.dispatchEvent(new Event('readystatechange'));
+}
 
 describe('Throws errors when script tags are not loaded', () => {
     beforeEach(() => {
@@ -23,7 +35,7 @@ describe('Throws errors when script tags are not loaded', () => {
     afterEach(() => {
         errors.length = 0;
         window.onerror = onerror;
-        Object.defineProperty(document, 'readyState', { value: readyState, writable: true });
+        updateReadyState(readyState);
     });
     it('should throw relevant error on the window context', async() => {
         register();
@@ -69,20 +81,31 @@ describe('Throws errors when script tags are not loaded', () => {
         expect(message).to.match(/http:\/\/localhost:\d{4}\/one\/missing\.js/m);
         expect(message).to.match(/http:\/\/localhost:\d{4}\/other\/missing\.js/m);
     });
-    it('should register for window load when document is not ready', async() => {
-        Object.defineProperty(document, 'readyState', { value: 'loading', writable: true });
+    it('should register for document readystatechange when document is not ready', async() => {
+        updateReadyState('loading');
         register();
         await wait(100);
         expect(errors).to.have.lengthOf(0);
-        window.dispatchEvent(new Event('load'));
+        updateReadyState('complete');
         await wait(100);
         expect(errors).to.have.lengthOf(1);
     });
     it('should trigger on next tick when document is ready', async() => {
-        Object.defineProperty(document, 'readyState', { value: 'complete', writable: true });
+        updateReadyState('complete');
         register();
         expect(errors).to.have.lengthOf(0);
         await wait(0);
         expect(errors).to.have.lengthOf(1);
+    });
+    it('should trigger callback instead of throwing an error', async() => {
+        updateReadyState('complete');
+        const callbackError = [];
+        register(
+            (error) => callbackError.push(error)
+        );
+        expect(errors).to.have.lengthOf(0);
+        await wait(0);
+        expect(errors).to.have.lengthOf(0);
+        expect(callbackError).to.have.lengthOf(1);
     });
 });
