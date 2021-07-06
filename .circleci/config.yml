@@ -18,6 +18,12 @@ jobs:
       - run:
           name: Check code syntax
           command: npm run lint -- --plugin log
+      - run:
+          name: Set npmrc credentials
+          command: echo -e $NPMRC > ~/.npmrc
+      - run:
+          name: Publish to NPM
+          command: npm_config_yes=true npx published --git-tag
 
 workflows:
   version: 2.1
